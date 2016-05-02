@@ -6,6 +6,7 @@ module Quickbooks
 
       attr_accessor :company_id
       attr_accessor :oauth
+      attr_accessor :before_request
       attr_reader :base_uri
       attr_reader :last_response_body
       attr_reader :last_response_xml
@@ -228,6 +229,8 @@ module Quickbooks
         log "RESOURCE = #{url}"
         log_request_body(body)
         log "REQUEST HEADERS = #{headers.inspect}"
+
+        before_request.call(method, url, headers) if !before_request.nil?
 
         response = case method
           when :get
